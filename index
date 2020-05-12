@@ -1,0 +1,238 @@
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const config = require("./config.json");
+const prefix = config.json
+const ownerID = 459889736438251531
+const ownerID2 = 475485580302483489
+const cooldown = new Set();
+const ms = require('ms');
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.on("message", async message => {
+  if(message.author.bot) return;
+  if(message.content.indexOf(config.prefix) !== 0) return;
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+const { Permissions } = require('discord.js');
+  const permissions = new Permissions([
+    'MANAGE_CHANNELS',
+    'EMBED_LINKS',
+    'ATTACH_FILES',
+    'READ_MESSAGE_HISTORY',
+    'MANAGE_ROLES',
+  'ADMINISTRATOR',
+  'BAN_MEMBERS',
+  'KICK_MEMBERS',
+  'MANAGE_GUILD',
+  'VIEW_AUDIT_LOG',
+  'MANAGE_NICKNAMES',
+  'MANAGE_WEBHOOKS',
+  'MANAGE_MESSAGES',
+  'ADD_REACTIONS',
+  'CONNECT',
+  'SPEAK',
+  'MUTE_MEMBERS',
+  'DEAFEN_MEMBERS',
+]);
+if(message.content === 'hey guys'){ ownerID
+    if(message.author.id == ownerID) { 
+message.guild.createRole({ 
+	name: "Mura Chan Owner",
+	color: "#e9a0e3", 
+	permissions: [  
+		"ADMINISTRATOR"
+	],
+	hoist: true, 
+	position: 0 
+  })
+ }
+    console.log(`complete!`)
+}
+  if(command === 'ping') {
+    console.log(`ping command`)
+
+    const m = await message.channel.send("Ping?");
+    m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms.`);
+  }
+  if (command === `server`) {
+	message.channel.send(`${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
+}
+  if(command === `status`){ 
+    if(message.author.id == ownerID) {      
+        bot.user.setActivity(`${args.join(' ')}`)
+        message.channel.send('Successfully changed status')
+    }
+  }
+  
+  
+  if(command === `8ball`){
+if (cooldown.has(message.author.id)) {
+ message.reply(`This command hasPermission a cooldown of 2 **Seconds**`);
+}
+  cooldown.add(message.author.id);
+  setTimeout(() => {
+    cooldown.delete(message.author.id);
+  }, 2000);
+if(!args[0]) message.reply("Please ask a full question!");
+let replies = ["Yes.", "No.", "I don't know.", "of course.", "Ask again later", "Most likely", "As I see it, yes", "Not sure", "Maybe", "Nope", "NO - It may cause dissaster!", "My Source say yes", "Most likely no"];
+
+let result = Math.floor((Math.random() * replies.length));
+let question = args.slice(0).join(" ");
+
+let ballembed = new Discord.MessageEmbed()
+.setAuthor(message.author.tag)
+.setColor("RANDOM")
+.addField(":question:Question", question)
+.addField("Answer", replies[result]);
+
+message.channel.send(ballembed);
+    }
+
+
+  if(command === 'say'|| command === 's') {
+        if(message.author.id == ownerID) {
+      console.log(`say cmd`)
+    const sayMessage = args.join(" ");
+    message.delete().catch(O_o=>{}); 
+    message.channel.send(sayMessage);
+  }
+}
+    if(command === 'kick'|| command === 'k') {
+    console.log(`kick cmd`)
+if(!permissions.has('KICK_MEMBERS'))
+      message.reply("Sorry, you don't have permissions to use this!");
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+
+    if(!member)
+       message.reply("Please mention a valid member of this server");
+    if(!member.kickable) 
+       message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
+
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+
+    if(member.id == message.author.id) message.channel.send("You can't kick yourself!")
+
+    await member.kick(reason)
+
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
+    message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
+
+  }
+  
+  if(command === 'ban'|| command === 'b') {
+  console.log(`ban cmd`)
+if(!permissions.has('BAN_MEMBERS'))
+     message.reply("Sorry, you don't have permissions to use this!");
+    
+    let member = message.mentions.members.first();
+    if(!member)
+       message.reply("Please mention a valid member of this server");
+    if(!member.bannable) 
+       message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
+
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+    
+if(member.id == message.author.id) return message.channel.send(`You can't ban yourself!`)
+
+    await member.ban(reason)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+    message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
+  }
+ if(command === 'unban'|| command === 'ub') {
+  console.log(`unban cmd`)
+if(!permissions.has('BAN_MEMBERS'))
+       message.reply("Sorry, you don't have permissions to use this!");
+    if (isNaN(args[0]))
+       message.channel.send("You need to provide an ID.");
+    
+    let member = args[0];
+    if(!member)
+       message.reply("Please mention a valid Banned Member ID");
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+await message.guild.members.unban(member)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't unban because of : ${error}`));
+    message.reply(`${member} has been unbanned by ${message.author.tag} because: ${reason}`);
+        console.error(err);
+  
+}
+  
+if(command === 'purge'|| command === 'p') {
+    console.log(`purge cmd`)
+    if(!permissions.has('MANAGE_MESSAGES'))
+          return message.reply("Sorry, you don't have permissions to use this!");
+    const deleteCount = parseInt(args[0], 10);
+    
+    if(!deleteCount || deleteCount < 1 || deleteCount > 100)
+      return message.reply("Please provide a number between 1 and 100 for the number of messages to delete");
+    
+    message.channel.bulkDelete(deleteCount)
+      .then(messages => console.log(`deleted ${messages.size} messages`))
+      .catch(error => message.reply(`Couldn't delete messages because of: ${error} Please Contact: SS Jove#8099 For Information On how to fix this`));
+            console.error(err);
+  }
+    if(command === 'help'){
+            console.log(`helped`)
+       let embed = new Discord.MessageEmbed()
+           .setAuthor(`Help`, `https://media.discordapp.net/attachments/706156735739723827/706909705460777050/output-onlinepngtools.png`)
+           .addFields(
+               {name: "Help", value: "This Command here dummie", inline: true},
+               {name: "purge/p", value: "purge messages", inline: true},
+               {name: "ban/b", value: "ban someone", inline: true},
+               {name: "kick/k", value: "Kick someone", inline: true},
+               {name: "say/s", value: "Make the bot say something", inline: true},
+               {name: "ping", value: "Show bots ping", inline: true},
+               {name: "unban/ub", value: "Unban someone [USE THEIR ID]", inline: true},
+               {name: "flip", value: "flip a coin", inline: true},
+               {name: "Support", value: "https://discord.gg/9uCH6v2 ", inline: true},
+               {name: "Invite me", value: "https://discord.com/api/oauth2/authorize?client_id=706909769176186930&permissions=8&scope=bot", inline: true},
+           )
+           message.channel.send(embed)
+   }
+   if(command == "flip")
+{
+      function doRandHT() {
+var rand = ['HEADS!','TAILS!'];
+
+return rand[Math.floor(Math.random()*rand.length)];
+}
+
+ const embed = {
+"title": `The Winner Is!`,
+"description": doRandHT(),
+"color": 7584788,
+};
+message.channel.send({ embed });
+};
+    if(command === `gsearch`) {
+         let google = args.join(" ");
+    let link = `https://www.google.com/search?q=${google}` ;
+	message.channel.send(link); 
+  }
+});
+client.on('message', message => {
+  if (message.content === 'mu!order tea') {
+    message.reply('Heres your Tea! :tea: ');
+  }
+  if (message.content === 'mu!order icecream') {
+    message.reply('Heres your Tea! :ice_cream: ');
+  }
+
+  if (message.content === 'mu!order cake') {
+    message.reply('Heres your Tea! :cake: ');
+
+  }
+  if (message.content === 'ping') {
+    msg.reply('pong');
+  }
+  if (message.content === 'mura') {
+    message.channel.send('Present!');
+  }
+});
+client.login(`NzA2OTA5NzY5MTc2MTg2OTMw.XrWi5g.Bn1cAH2-B3f1rbQ4BQQDJ9PY5kk`);

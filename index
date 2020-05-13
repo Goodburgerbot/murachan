@@ -495,4 +495,4 @@ client.on('message', message => {
     message.channel.send('Present!');
   }
 });
-client.login(`NzA2OTA5NzY5MTc2MTg2OTMw.XrWi5g.Bn1cAH2-B3f1rbQ4BQQDJ9PY5kk`);
+client.login(`your secret token`);
